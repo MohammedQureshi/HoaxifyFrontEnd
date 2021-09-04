@@ -6,7 +6,8 @@ export class UserSignUpPage extends React.Component {
         displayName: '',
         username: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        pendingApiCall: false
     }
 
     onChangehDisplayName = (event) => {
@@ -35,13 +36,16 @@ export class UserSignUpPage extends React.Component {
             displayName: this.state.displayName,
             password: this.state.password,
         }
-        this.props.actions.postSignUp(user);
+        this.setState({pendingApiCall: true})
+        this.props.actions.postSignUp(user).then((response) => {
+            this.setState({pendingApiCall: false})
+        })
     }
 
     render(){
         return(
             <div className="container">
-                <h1 class="text-center">Sign Up</h1>
+                <h1 className="text-center">Sign Up</h1>
                 <div className="col-12 mb-3">
                     <label>Display Name</label>
                     <input placeholder="Your display name" value={this.state.displayName} onChange={this.onChangehDisplayName} className="form-control" />
@@ -58,7 +62,16 @@ export class UserSignUpPage extends React.Component {
                     <label>Confirm Password</label>
                     <input placeholder="Confirm your password" type="password" value={this.state.confirmPassword} onChange={this.onChangeConfirmPassword} className="form-control" />
                 </div>
-                <div className="text-center"><button onClick={this.onClickSignUp} className="btn btn-primary w-100">Sign Up</button></div>
+                <div className="text-center">
+                    <button onClick={this.onClickSignUp} className="btn btn-primary w-100" disabled={this.state.pendingApiCall} >
+                        {this.state.pendingApiCall && (
+                            <div className="spinner-border text-light spinner-border-sm mr-sm-1" role="status">
+                                <span className="d-none">Loading...</span>
+                            </div>
+                        )}
+                        Sign Up
+                    </button>
+                </div>
             </div>
         )
     }
