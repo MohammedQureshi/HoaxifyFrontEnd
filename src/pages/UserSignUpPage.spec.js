@@ -60,7 +60,7 @@ describe('UserSignUpPage', () => {
         const mockAsyncDelay = () => {
             return jest.fn().mockImplementation(() => {
                 return new Promise((resolve, reject) => {
-                    setTimeOut(() => {
+                    setTimeout(() => {
                         resolve({});
                     }, 300)
                 })
@@ -168,5 +168,25 @@ describe('UserSignUpPage', () => {
             const spinner = queryByText('Loading...');
             expect(spinner).not.toBeInTheDocument()
         })
+        it('hides spinner after api call finishes with error ', async () => {
+            const actions = {
+                postSignUp: jest.fn().mockImplementation(() => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            reject({
+                                response: { data: {}}
+                            });
+                        }, 300)
+                    })
+                })
+            }
+            const { queryByText } = setUpForSubmit({ actions })
+            fireEvent.click(button)
+            await waitForElementToBeRemoved(() => queryByText('Loading...'), {timeout: 400})
+            const spinner = queryByText('Loading...');
+            expect(spinner).not.toBeInTheDocument()
+        })
     })
 })
+
+console.error = () => {};
