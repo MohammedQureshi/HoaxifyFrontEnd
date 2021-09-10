@@ -1,8 +1,7 @@
 import React from 'react'
-import { render, cleanup, fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, cleanup, fireEvent, waitForElementToBeRemoved, waitFor} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { UserSignUpPage } from './UserSignUpPage'
-
 beforeEach(cleanup);
 
 describe('UserSignUpPage', () => {
@@ -185,6 +184,24 @@ describe('UserSignUpPage', () => {
             await waitForElementToBeRemoved(() => queryByText('Loading...'), {timeout: 400})
             const spinner = queryByText('Loading...');
             expect(spinner).not.toBeInTheDocument()
+        })
+        it('displays validation error for displayName when error is received for the field', async () => {
+            const actions = {
+                postSignUp: jest.fn().mockRejectedValue({
+                  response: {
+                    data: {
+                      validationErrors: {
+                        displayName: 'Cannot be null',
+                      },
+                    },
+                  },
+                }),
+              };
+            const { findByText } = setUpForSubmit({ actions });
+            fireEvent.click(button);
+
+            const errorMessage = await findByText('Cannot be null');
+            expect(errorMessage).toBeInTheDocument();
         })
     })
 })

@@ -7,7 +7,8 @@ export class UserSignUpPage extends React.Component {
         username: '',
         password: '',
         confirmPassword: '',
-        pendingApiCall: false
+        pendingApiCall: false,
+        errors: {}
     }
 
     onChangehDisplayName = (event) => {
@@ -40,10 +41,16 @@ export class UserSignUpPage extends React.Component {
         this.props.actions.postSignUp(user).then((response) => {
             this.setState({pendingApiCall: false})
         })
-        .catch(error => {
-            this.setState({pendingApiCall: false})
+        .catch(apiError => {
+            let errors = {...this.state.errors}
+            if(apiError.response.data && apiError.response.data.validationErrors){
+                errors = {...apiError.response.data.validationErrors}
+            }
+            this.setState({pendingApiCall: false, errors})
+            console.log(apiError.response)
         });
     }
+
 
     render(){
         return(
@@ -52,6 +59,9 @@ export class UserSignUpPage extends React.Component {
                 <div className="col-12 mb-3">
                     <label>Display Name</label>
                     <input placeholder="Your display name" value={this.state.displayName} onChange={this.onChangehDisplayName} className="form-control" />
+                    <div className="invalid-feedback">
+                        {this.state.errors.displayName}
+                    </div>
                 </div>
                 <div className="col-12 mb-3">
                     <label>Username</label>
