@@ -1,8 +1,7 @@
 import React from 'react'
-import { render, cleanup, fireEvent, waitForElementToBeRemoved, waitFor} from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
+import { render, fireEvent, waitForElementToBeRemoved, waitFor} from '@testing-library/react'
 import { UserSignUpPage } from './UserSignUpPage'
-beforeEach(cleanup);
+
 
 describe('UserSignUpPage', () => {
     describe('Layout', () => {
