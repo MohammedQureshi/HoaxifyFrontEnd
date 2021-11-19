@@ -5,7 +5,7 @@ export class LoginPage extends React.Component{
     state = {
         username: '',
         password: '',
-        apiError: 'Login failed'
+        apiError: undefined
     }
 
     onChangeUsername = (event) => {
