@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, waitForElementToBeRemoved, waitFor} from '@testing-library/react'
+import { render, fireEvent, waitForElementToBeRemoved} from '@testing-library/react'
 import { UserSignUpPage } from './UserSignUpPage'
 
 

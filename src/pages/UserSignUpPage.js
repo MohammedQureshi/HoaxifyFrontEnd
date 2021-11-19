@@ -60,7 +60,6 @@ export class UserSignUpPage extends React.Component {
                 errors = {...apiError.response.data.validationErrors}
             }
             this.setState({pendingApiCall: false, errors})
-            console.log(apiError.response)
         });
     }
 

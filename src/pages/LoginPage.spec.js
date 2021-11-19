@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, fireEvent, waitFor, waitForElementToBeRemoved, findByText } from '@testing-library/react'
 import { LoginPage } from './LoginPage'
 
 describe('LoginPage', () => {
@@ -120,12 +120,11 @@ describe('LoginPage', () => {
                     }
                 })
             }
-            const { queryByText } = setupForSubmit({ actions })
+            const { findByText } = setupForSubmit({ actions });
             fireEvent.click(button);
-
-            await waitFor(() => {
-                expect(queryByText('Login failed')).toBeInTheDocument();
-              });
+    
+            const alert = await findByText('Login failed');
+            expect(alert).toBeInTheDocument();
         })
 
         it('clears alert when user clears username', async () => {
@@ -138,16 +137,11 @@ describe('LoginPage', () => {
                     }
                 })
             }
-            const { queryByText } = setupForSubmit({ actions })
+            const { findByText } = setupForSubmit({ actions })
             fireEvent.click(button);
 
-            await waitFor(() => {
-               queryByText('Login failed')
-              });
-
+            const alert = await findByText('Login failed');
             fireEvent.change(usernameInput, changeEvent('updated-username'));
-
-            const alert = queryByText('Login failed')
             expect(alert).not.toBeInTheDocument();
         })
 
@@ -161,15 +155,11 @@ describe('LoginPage', () => {
                     }
                 })
             }
-            const { queryByText } = setupForSubmit({ actions })
+            const { findByText } = setupForSubmit({ actions });
             fireEvent.click(button);
 
-            await waitFor(() => {
-               queryByText('Login failed')
-              });
+            const alert = await findByText('Login failed');
             fireEvent.change(passwordInput, changeEvent('updated-password'));
-
-            const alert = queryByText('Login failed')
             expect(alert).not.toBeInTheDocument();
         })
     })
