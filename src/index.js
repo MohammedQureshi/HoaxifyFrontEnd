@@ -7,12 +7,12 @@ import { LoginPage } from './pages/LoginPage'
 import * as apiCalls from './api/apiCalls'
 
 const actions = {
-  postSignUp: apiCalls.signup
+  postLogin: apiCalls.login
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginPage />
+    <LoginPage actions={actions} />
   </React.StrictMode>,
   document.getElementById('root')
 );
