@@ -123,8 +123,9 @@ describe('LoginPage', () => {
             const { queryByText } = setupForSubmit({ actions })
             fireEvent.click(button);
 
-            const alert = await waitFor(() => queryByText('Login failed'));
-            expect(alert).toBeInTheDocument();
+            await waitFor(() => {
+                expect(queryByText('Login failed')).toBeInTheDocument();
+              });
         })
 
         it('clears alert when user clears username', async () => {
@@ -140,7 +141,10 @@ describe('LoginPage', () => {
             const { queryByText } = setupForSubmit({ actions })
             fireEvent.click(button);
 
-            await waitForElementToBeRemoved(() => queryByText('Login failed'))
+            await waitFor(() => {
+               queryByText('Login failed')
+              });
+
             fireEvent.change(usernameInput, changeEvent('updated-username'));
 
             const alert = queryByText('Login failed')
@@ -160,7 +164,9 @@ describe('LoginPage', () => {
             const { queryByText } = setupForSubmit({ actions })
             fireEvent.click(button);
 
-            await waitForElementToBeRemoved(() => queryByText('Login failed'))
+            await waitFor(() => {
+               queryByText('Login failed')
+              });
             fireEvent.change(passwordInput, changeEvent('updated-password'));
 
             const alert = queryByText('Login failed')
