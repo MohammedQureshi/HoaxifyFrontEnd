@@ -294,6 +294,18 @@ describe('UserSignUpPage', () => {
             fireEvent.change(passwordInput, changeEvent('password-updated'));
             const errorMessage = queryByText('Cannot be null');
             expect(errorMessage).not.toBeInTheDocument();
+    })
+        it('redirects to homepage after successful signup ', async () => {
+            const actions = {
+                postSignUp: jest.fn().mockResolvedValue({})
+            };
+            const history = {
+                push: jest.fn()
+            }
+            const { queryByText } = setUpForSubmit({ actions, history })
+            fireEvent.click(button)
+            await waitForElementToBeRemoved(() => queryByText('Loading...'), {timeout: 400})
+            expect(history.push).toHaveBeenCalledWith('/');
         })
     })
 })
